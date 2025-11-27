@@ -37,6 +37,13 @@ env:
     - MYSQL_APP_USER
     - MYSQL_READONLY_PASSWORD
     - MYSQL_READONLY_USER
+    - SECRET_KEY_BASE
+    - VAPID_PUBLIC_KEY
+    - VAPID_PRIVATE_KEY
+    - ACTIVE_STORAGE_ACCESS_KEY_ID
+    - ACTIVE_STORAGE_SECRET_ACCESS_KEY
+    - QUEENBEE_API_TOKEN
+    - SIGNAL_ID_SECRET
   tags:
     sc_chi:
       MYSQL_SOLID_CACHE_HOST: fizzy-staging-solidcache-db-01.sc-chi-int.37signals.com

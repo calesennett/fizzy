@@ -20,6 +20,26 @@ ssh:
 env:
   clear:
     RAILS_ENV: beta
+    MYSQL_DATABASE_HOST: fizzy-beta-mysql-primary
+    MYSQL_DATABASE_REPLICA_HOST: fizzy-beta-mysql-replica
+    MYSQL_SOLID_CABLE_HOST: fizzy-beta-mysql-primary
+    MYSQL_SOLID_QUEUE_HOST: fizzy-beta-mysql-primary
+    MYSQL_SOLID_CACHE_HOST: fizzy-beta-mysql-primary
+  secret:
+    - RAILS_MASTER_KEY
+    - MYSQL_ALTER_PASSWORD
+    - MYSQL_ALTER_USER
+    - MYSQL_APP_PASSWORD
+    - MYSQL_APP_USER
+    - MYSQL_READONLY_PASSWORD
+    - MYSQL_READONLY_USER
+    - SECRET_KEY_BASE
+    - VAPID_PUBLIC_KEY
+    - VAPID_PRIVATE_KEY
+    - ACTIVE_STORAGE_ACCESS_KEY_ID
+    - ACTIVE_STORAGE_SECRET_ACCESS_KEY
+    - QUEENBEE_API_TOKEN
+    - SIGNAL_ID_SECRET
 
 accessories:
   load-balancer:

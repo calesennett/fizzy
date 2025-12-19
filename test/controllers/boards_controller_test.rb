@@ -26,6 +26,27 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Remodel Punch List", board.name
   end
 
+  test "create with imported columns" do
+    source_board = boards(:writebook)
+    source_columns = source_board.columns.sorted
+
+    assert_difference -> { Board.count }, +1 do
+      assert_difference -> { Column.count }, source_columns.count do
+        post boards_path, params: {
+          board: { name: "Imported Board" },
+          import_columns_from_board_id: source_board.id
+        }
+      end
+    end
+
+    board = Board.last
+    created_columns = board.columns.sorted
+
+    assert_redirected_to board_path(board)
+    assert_equal source_columns.pluck(:name), created_columns.pluck(:name)
+    assert_equal source_columns.pluck(:color), created_columns.pluck(:color)
+  end
+
   test "edit" do
     get edit_board_path(boards(:writebook))
     assert_response :success

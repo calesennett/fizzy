@@ -18,10 +18,16 @@ class BoardsController < ApplicationController
 
   def new
     @board = Board.new
+    @importable_boards = Current.user.boards.alphabetically
   end
 
   def create
-    @board = Board.create! board_params.with_defaults(all_access: true)
+    @board = Board.new board_params.with_defaults(all_access: true)
+
+    Board.transaction do
+      @board.save!
+      import_columns_from_board
+    end
 
     respond_to do |format|
       format.html { redirect_to board_path(@board) }
@@ -88,6 +94,21 @@ class BoardsController < ApplicationController
 
     def board_params
       params.expect(board: [ :name, :all_access, :auto_postpone_period, :public_description ])
+    end
+
+    def import_columns_from_board
+      return if import_columns_from_board_id.blank?
+
+      source_board = Current.user.boards.find_by(id: import_columns_from_board_id)
+      return unless source_board
+
+      source_board.columns.sorted.each do |column|
+        @board.columns.create!(name: column.name, color: column.color)
+      end
+    end
+
+    def import_columns_from_board_id
+      params[:import_columns_from_board_id]
     end
 
     def grantees
